@@ -1,1 +1,938 @@
-Hello World
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>Audio samples from "Variable-rate discrete representation learning"</title>
+
+<script>
+      function play(path) {{
+        var player = document.getElementById('player');
+        player.src = path;
+        player.play();
+      }}
+    </script>
+
+
+<style>
+body {
+   font-family: Arial, sans-serif;
+}
+.paper_title {
+  font-style: italic;
+}
+.paper_date {
+  font-weight: bold;
+}
+#toc_container {
+  background: #f9f9f9 none repeat scroll 0 0;
+  border: 1px solid #aaa;
+  display: table;
+  font-size: 95%;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 8px;
+  width: auto;
+}
+.toc_title {
+  font-weight: 700;
+  font-size: 18pt;
+  text-align: left;
+}
+#toc_container ul  {
+  list-style: outside none none !important; margin-left: -40px;
+}
+.h2_explainer {
+  margin-bottom: 2px;
+}
+h3 {
+  margin-bottom: 2px;
+}
+.h3_explainer {
+  padding-bottom: 10px;
+  padding-top: 5px;
+}
+.transcript {
+  font-style: italic;
+}
+.text_e2e {
+  font-style: italic;
+  color: #666666;
+  font-size: 11pt;
+}
+
+td.reference {
+  text-wrap: overflow;
+  min-width: 500px;
+  max-width: 500px;
+}
+td.reference button {
+  margin-left: 10px;
+}
+td.algorithm {
+  text-align: right;
+}
+#player {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+td.synthesis {
+  text-align:center;
+}
+
+
+.audio-cell {
+  /* Center audio widgets in the table cell. */
+  text-align: center;
+  padding-bottom: 1px;
+  padding-top: 1px;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+.audio-cell-padded {
+  text-align: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.audio-header {
+  /* Don't wrap header text. */
+  white-space: nowrap;
+  /* Some breaking space between headers for readability. */
+  padding-right: 4px;
+  padding-left: 4px;
+}
+.text-cell {
+  /* For uniformity and to wrap long text, limit the reference cell's width. */
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.acc-cell {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 80%;
+}
+
+.input-cell {
+  /* For uniformity and to wrap long reference text, limit the reference cell's width. */
+  text-align: center;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.sample audio {
+  vertical-align: middle;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.round-button {
+	box-sizing: border-box;
+	display:block;
+	width:30px;
+	height:30px;
+	padding-top: 8px;
+	padding-left: 3px;
+	line-height: 6px;
+	border: 1.2px solid #000;
+	border-radius: 50%;
+	color: #000;
+	text-align:center;
+	background-color: rgba(0,0,0,0.00);
+	font-size:6px;
+  box-shadow: 0px 0px 2px rgba(0,0,0,1);
+	transition: all 0.2s ease;
+}
+.round-button:hover {
+	background-color: rgba(0,0,0,0.0);
+	box-shadow: 0px 0px 4px rgba(0,0,0,1);
+}
+.round-button:active {
+	background-color: rgba(0,0,0,0.01);
+	box-shadow: 0px 0px 1px rgba(0,0,0,1);
+}
+
+details > summary {
+  margin-bottom: 1em;
+}
+
+details {
+  margin-bottom: 2em;
+}
+</style>
+
+  </head>
+  <body>
+
+    <article>
+      <header>
+        <h1>Audio samples from "Variable-rate discrete representation learning"</h1>
+      </header>
+    </article>
+    <div><p><b>Paper:</b> <a href="TODO ARXIV LINK">arXiv</a> <b>TODO: update when link available</b></p></div>
+    <div><p><b>Authors:</b> Sander Dieleman, Charlie Nash, Jesse Engel, Karen Simonyan</p></div>
+    <div><p><b>Abstract:</b> Semantically meaningful information content in perceptual signals is usually unevenly distributed. In this work, we propose <em>slow autoencoders</em> (SlowAEs) for unsupervised learning of high-level variable-rate discrete representations of sequences, and apply them to speech signals. We show that the capacity of the resulting <em>event-based</em> representations automatically grows or shrinks depending on the density of salient information in the input signals, while still allowing for faithful signal reconstruction. We develop <em>run-length Transformers</em> (RLTs) for event-based representation modelling and use them to construct language models in the speech domain, which are able to generate grammatical and semantically coherent utterances and continuations. <b>TODO: update to latest version</b></p></div>
+
+    <p class="toc_title">Contents</p>
+    <div id="toc_container">
+    <ul>
+      <li><a href="#prompts"> 1. Prompts</a></li>
+      <li><a href="#reconstructions"> 2. Reconstructions</a></li>
+      <li><a href="#comparison"> 3. Comparison: VQ-VAE & SlowAE</a><li>
+      <li><a href="#completions"> 4. 2.4B model: completions</a><li>
+      <li><a href="#unconditional"> 5. 2.4B model: unconditional re-ranked samples</a><li>
+      <li><a href="#bookconditional"> 6. 2.4B model: book-conditional samples</a><li>
+    </ul>
+    </div>
+  </p>
+
+  <a name="prompts"><h2>1. Prompts</h2></a>
+  <details open>
+    <summary>Below are four 4-second clips of recorded speech, which we use to compare reconstruction quality across different discrete autoencoder models, and as prompts for our generative models.</summary>
+
+    <table>
+    <thead>
+      <tr><th></th><th>Audio</th><th>Transcription</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Prompt 1</th>
+        <td class="audio-cell"><audio controls="" preload="none" src="./prompts/000.wav"></audio></td>
+        <td class="text-cell"><span class="text_e2e">Typical of tree frogs, it has toe pads which enable it to climb smooth vertical [...]</span></td>
+      </tr>
+      <tr>
+        <th>Prompt 2</th>
+        <td class="audio-cell"><audio controls="" preload="none" src="./prompts/001.wav"></audio></td>
+        <td class="text-cell"><span class="text_e2e">WestJet Encore flight 511 on December 24, departs [...]</span></td>
+      </tr>
+      <tr>
+        <th>Prompt 3</th>
+        <td class="audio-cell"><audio controls="" preload="none" src="./prompts/002.wav"></audio></td>
+        <td class="text-cell"><span class="text_e2e">Alright, so you have it for later, I've added pencils to your shopping list.</span></td>
+      </tr>
+      <tr>
+        <th>Prompt 4</th>
+        <td class="audio-cell"><audio controls="" preload="none" src="./prompts/003.wav"></audio></td>
+        <td class="text-cell"><span class="text_e2e">Some websites have appropriated lists of royalty, and have reprinted the na[mes ...]</span></td>
+      </tr>
+    </tbody>
+    </table>
+  </details>
+
+   <a name="reconstructions"><h2>2. Reconstructions</h2></a>
+   <details>
+    <summary>We sample reconstructions for each prompt clip using different discrete autoencoder models (see Figure 6 in the paper) <b>TODO: update figure number if necessary</b>. We report phoneme accuracy as a proxy for intelligibility. The models we used for further experiments are indicated with an asterisk.</summary>
+
+   <table>
+    <thead>
+      <tr><th>Model</th><th>Phoneme accuracy</th><th>Prompt 1</th><th>Prompt 2</th><th>Prompt 3</th><th>Prompt 4</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="6" class="text-cell"><span class="text_e2e">SlowAE models with fixed &lambda;</span></td>
+      </tr>
+      <tr>
+        <td class="text-cell">&lambda; = 0.1</td>
+        <td class="acc-cell">86.87%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_0.1/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_0.1/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_0.1/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_0.1/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">&lambda; = 0.3</td>
+        <td class="acc-cell">88.65%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_0.3/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_0.3/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_0.3/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_0.3/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">&lambda; = 1.0</td>
+        <td class="acc-cell">89.82%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_1.0/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_1.0/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_1.0/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_1.0/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">&lambda; = 3.0</td>
+        <td class="acc-cell">87.87%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_3.0/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_3.0/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_3.0/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_3.0/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">&lambda; = 10.0</td>
+        <td class="acc-cell">87.37%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_10.0/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_10.0/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_10.0/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_10.0/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">&lambda; = 30.0</td>
+        <td class="acc-cell">80.89%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_30.0/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_30.0/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_30.0/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_30.0/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">&lambda; = 100.0</td>
+        <td class="acc-cell">29.28%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_100.0/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_100.0/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_100.0/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_100.0/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">&lambda; = 300.0</td>
+        <td class="acc-cell">5.55%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_300.0/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_300.0/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_300.0/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_300.0/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">&lambda; = 1000.0</td>
+        <td class="acc-cell">3.73%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_1000.0/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_1000.0/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_1000.0/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/lambda_1000.0/003.wav"></audio></td>
+      </tr>
+
+      <tr>
+        <td colspan="6" class="text-cell"><span class="text_e2e">SlowAE models with target average event rates (AERs) R<sub>T</sub></span></td>
+      </tr>
+      <tr>
+        <td class="text-cell">R<sub>T</sub> = 35Hz</td>
+        <td class="acc-cell">64.95%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_35hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_35hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_35hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_35hz/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">R<sub>T</sub> = 45Hz</td>
+        <td class="acc-cell">71.09%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_45hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_45hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_45hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_45hz/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">R<sub>T</sub> = 55Hz</td>
+        <td class="acc-cell">77.34%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_55hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_55hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_55hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_55hz/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">R<sub>T</sub> = 65Hz</td>
+        <td class="acc-cell">79.52%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_65hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_65hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_65hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_65hz/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell"><strong>*R<sub>T</sub> = 75Hz</strong></td>
+        <td class="acc-cell">81.21%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">R<sub>T</sub> = 85Hz</td>
+        <td class="acc-cell">84.19%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_85hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_85hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_85hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_85hz/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">R<sub>T</sub> = 95Hz</td>
+        <td class="acc-cell">84.98%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_95hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_95hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_95hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_95hz/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">R<sub>T</sub> = 105Hz</td>
+        <td class="acc-cell">86.30%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_105hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_105hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_105hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_105hz/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">R<sub>T</sub> = 115Hz</td>
+        <td class="acc-cell">85.29%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_115hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_115hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_115hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_115hz/003.wav"></audio></td>
+      </tr>
+
+      <tr>
+        <td colspan="6" class="text-cell"><span class="text_e2e">SlowAE models with varying number of channels (C) and quantisation levels (2k + 1), R<sub>T</sub> = 75Hz</span></td>
+      </tr>
+      <tr>
+        <td class="text-cell">C = 1, k = 1</td>
+        <td class="acc-cell">3.62%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_1/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_1/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_1/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_1/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">C = 2, k = 1</td>
+        <td class="acc-cell">3.60%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_1/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_1/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_1/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_1/003.wav"></audio></td>
+      </tr>
+        <tr>
+        <td class="text-cell">C = 4, k = 1</td>
+        <td class="acc-cell">3.50%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_1/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_1/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_1/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_1/003.wav"></audio></td>
+      </tr>
+        <tr>
+        <td class="text-cell">C = 8, k = 1</td>
+        <td class="acc-cell">3.74%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_1/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_1/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_1/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_1/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">C = 1, k = 3</td>
+        <td class="acc-cell">49.12%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_3/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_3/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_3/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_3/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">C = 2, k = 3</td>
+        <td class="acc-cell">3.59%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_3/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_3/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_3/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_3/003.wav"></audio></td>
+      </tr>
+        <tr>
+        <td class="text-cell">C = 4, k = 3</td>
+        <td class="acc-cell">81.91%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_3/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_3/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_3/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_3/003.wav"></audio></td>
+      </tr>
+        <tr>
+        <td class="text-cell">C = 8, k = 3</td>
+        <td class="acc-cell">80.66%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_3/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_3/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_3/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_3/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">C = 1, k = 7</td>
+        <td class="acc-cell">50.71%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_7/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_7/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_7/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_7/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">C = 2, k = 7</td>
+        <td class="acc-cell">76.12%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_7/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_7/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_7/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_7/003.wav"></audio></td>
+      </tr>
+        <tr>
+        <td class="text-cell"><strong>*C = 4, k = 7</strong></td>
+        <td class="acc-cell">81.21%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/003.wav"></audio></td>
+      </tr>
+        <tr>
+        <td class="text-cell">C = 8, k = 7</td>
+        <td class="acc-cell">81.60%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_7/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_7/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_7/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_7/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">C = 1, k = 10</td>
+        <td class="acc-cell">49.25%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_10/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_10/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_10/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_1_k_10/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">C = 2, k = 10</td>
+        <td class="acc-cell">76.91%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_10/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_10/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_10/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_2_k_10/003.wav"></audio></td>
+      </tr>
+        <tr>
+        <td class="text-cell">C = 4, k = 10</td>
+        <td class="acc-cell">80.72%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_10/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_10/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_10/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_4_k_10/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">C = 8, k = 10</td>
+        <td class="acc-cell">83.12%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_10/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_10/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_10/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/c_8_k_10/003.wav"></audio></td>
+      </tr>
+
+      <tr>
+        <td colspan="6" class="text-cell"><span class="text_e2e">SlowAE models with different slowness penalties (R<sub>T</sub> = 75Hz</span>)</td>
+      </tr>
+      <tr>
+        <td class="text-cell"><strong>*Group-sparse slowness</strong></td>
+        <td class="acc-cell">81.21%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/target_aer_75hz/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">L1 slowness</td>
+        <td class="acc-cell">80.10%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l1_slowness/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l1_slowness/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l1_slowness/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l1_slowness/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">L2 slowness</td>
+        <td class="acc-cell">80.84%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l2_slowness/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l2_slowness/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l2_slowness/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l2_slowness/003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">L4 slowness</td>
+        <td class="acc-cell">78.83%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l4_slowness/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l4_slowness/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l4_slowness/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/l4_slowness/003.wav"></audio></td>
+      </tr>
+
+      <tr>
+        <td colspan="6" class="text-cell"><span class="text_e2e">VQ-VAE model (fixed-rate baseline)</span></td>
+      </tr>
+
+      <tr>
+        <td class="text-cell"><strong>*VQ-VAE (62.5Hz)</strong></td>
+        <td class="acc-cell">81.75%</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/vq/000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/vq/001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/vq/002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./reconstructions/vq/003.wav"></audio></td>
+      </tr>
+    </tbody>
+  </table>
+  </details>
+
+  <a name="comparison"><h2>3. Comparison: VQ-VAE & SlowAE</h2></a>
+  <details>
+    <summary>We compare variable-rate and fixed-rate discrete representations by training Transformer models with approximately 1 billion parameters, and sampling completions for the given prompts (sequence length 512).</summary>
+
+  <table>
+    <thead>
+      <tr><th></th><th>Prompt 1</th><th>Prompt 2</th><th>Prompt 3</th><th>Prompt 4</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="5" class="text-cell"><span class="text_e2e">Samples from a transformer trained on VQ-VAE code sequences</span></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 1</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt000_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt001_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt002_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt003_000.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 2</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt000_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt001_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt002_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt003_001.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 3</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt000_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt001_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt002_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt003_002.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 4</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt000_003.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt001_003.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt002_003.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt003_003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 5</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt000_004.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt001_004.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt002_004.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt003_004.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 6</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt000_005.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt001_005.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt002_005.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt003_005.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 7</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt000_006.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt001_006.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt002_006.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt003_006.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 8</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt000_007.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt001_007.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt002_007.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_vqvae/prompt003_007.wav"></audio></td>
+      </tr>
+
+      <tr>
+        <td colspan="5" class="text-cell"><span class="text_e2e">Samples from a run-length transformer (RLT) trained on SlowAE code sequences</span></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 1</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt000_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt001_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt002_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt003_000.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 2</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt000_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt001_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt002_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt003_001.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 3</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt000_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt001_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt002_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt003_002.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 4</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt000_003.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt001_003.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt002_003.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt003_003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 5</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt000_004.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt001_004.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt002_004.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt003_004.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 6</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt000_005.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt001_005.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt002_005.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt003_005.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 7</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt000_006.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt001_006.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt002_006.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt003_006.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 8</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt000_007.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt001_007.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt002_007.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_1000m_slowae/prompt003_007.wav"></audio></td>
+      </tr>
+    </tbody>
+  </table>
+  </details>
+
+  <a name="completions"><h2>4. 2.4B model: completions</h2></a>
+  <details>
+    <summary>We sample completions for the given prompts from a Transformer with approximately 2.4 billion parameters (sequence length 512). This model is conditioned on book identity embeddings, but we include an additional "unconditional" embedding which is used 10% of the time during training, so that the model is also able to generate samples without book identity conditioning. We use this embedding to produce these completions.</summary>
+
+  <table>
+    <thead>
+      <tr><th></th><th>Prompt 1</th><th>Prompt 2</th><th>Prompt 3</th><th>Prompt 4</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-cell">sample 1</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_000.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 2</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_001.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 3</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_002.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 4</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_003.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_003.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_003.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 5</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_004.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_004.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_004.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_004.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 6</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_005.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_005.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_005.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_005.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 7</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_006.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_006.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_006.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_006.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 8</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_007.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_007.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_007.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_007.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 9</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_008.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_008.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_008.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_008.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 10</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_009.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_009.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_009.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_009.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 11</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_010.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_010.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_010.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_010.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 12</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_011.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_011.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_011.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_011.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 13</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_012.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_012.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_012.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_012.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 14</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_013.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_013.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_013.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_013.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 15</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_014.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_014.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_014.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_014.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">sample 16</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt000_015.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt001_015.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt002_015.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/completions/prompt003_015.wav"></audio></td>
+      </tr>
+    </tbody>
+  </table>
+  </details>
+
+  <a name="unconditional"><h2>5. 2.4B model: unconditional re-ranked samples</h2></a>
+  <details>
+    <summary>We draw samples from the 2.4 billion parameter model without prompts (using the "unconditional" embedding). This is a much harder task, so we draw 512 samples and select the 32 that produce the lowest phoneme prediction entropy under our ASR model (see §6.3.2 in the paper).</summary>
+
+    <table>
+      <tbody>
+        <tr>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/000.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/001.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/002.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/003.wav"></audio></td>
+        </tr>
+        <tr>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/004.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/005.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/006.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/007.wav"></audio></td>
+        </tr>
+        <tr>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/008.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/009.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/010.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/011.wav"></audio></td>
+        </tr>
+        <tr>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/012.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/013.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/014.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/015.wav"></audio></td>
+        </tr>
+        <tr>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/016.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/017.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/018.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/019.wav"></audio></td>
+        </tr>
+        <tr>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/020.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/021.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/022.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/023.wav"></audio></td>
+        </tr>
+        <tr>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/024.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/025.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/026.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/027.wav"></audio></td>
+        </tr>
+        <tr>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/028.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/029.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/030.wav"></audio></td>
+          <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/unconditional_reranked/031.wav"></audio></td>
+        </tr>
+      </tbody>
+    </table>
+  </details>
+
+  <a name="bookconditional"><h2>5. 2.4B model: book-conditional samples</h2></a>
+
+  <details>
+    <summary>We draw samples from the 2.4 billion parameter model conditioned on book embeddings. We selected a few books, drew 16 samples per book, and then cherry-picked four samples for each. Data quality (and hence, sample quality) varies considerably across books.</summary>
+
+    <table>
+      <thead>
+        <tr><th>Book (LibriVox ID)</th><th>Sample 1</th><th>Sample 2</th><th>Sample 3</th><th>Sample 4</th></tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="text-cell">'The Truth about Jesus'<br>M. M. Mangasarian (#76)</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00076_truth_about_jesus_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00076_truth_about_jesus_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00076_truth_about_jesus_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00076_truth_about_jesus_003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">'Jane Eyre'<br>Charlotte Brontë (#133)</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00133_jane_eyre_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00133_jane_eyre_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00133_jane_eyre_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00133_jane_eyre_003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">'Hamlet'<br>William Shakespeare (#346)</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00346_hamlet_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00346_hamlet_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00346_hamlet_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00346_hamlet_003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">'Jungle Book'<br>Rudyard Kipling (#662)</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00662_jungle_book_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00662_jungle_book_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00662_jungle_book_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/00662_jungle_book_003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">'Dracula'<br>Bram Stoker (#10747)</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/10747_dracula_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/10747_dracula_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/10747_dracula_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/10747_dracula_003.wav"></audio></td>
+      </tr>
+      <tr>
+        <td class="text-cell">'Fairy Stories my Children Love Best of All'<br>Edgar Shimer (#13372)</td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/13372_fairy_stories_000.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/13372_fairy_stories_001.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/13372_fairy_stories_002.wav"></audio></td>
+        <td class="audio-cell"><audio controls="" preload="none" src="./samples_2400m/book_conditional_cherrypicked/13372_fairy_stories_003.wav"></audio></td>
+      </tr>
+      </tbody>
+    </table>
+  </details>
+
+<p>Page template borrowed from <a href="https://google.github.io/tacotron/publications/wave-tacotron/">Wave-Tacotron</a>.</p>
+
+</body></html>
